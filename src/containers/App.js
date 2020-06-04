@@ -8,12 +8,11 @@ import './App.css';
 
 import {setSearchField,requestRobots} from'../Actions';
 
-const mapStateToProps= state =>{
+const mapStateToProps=(state) =>{
 	return{
 		searchField:state.searchRobots.searchField,
 		robots: state.requestRobots.robots,
-		isPanding:state.requestRobots.isPanding,
-		error:state.requestRobots.error
+		isPending:state.requestRobots.isPending
 	}
 }
 
@@ -33,20 +32,20 @@ class App extends Component {
 	}
 	
 	render(){
-	        const {searchField,onSearchChange,robots,isPanding}=this.props;
+	        const {searchField,onSearchChange,robots,isPending}=this.props;
 			const filteredRobots =robots.filter(robot =>{
 	 		return robot.name.toLowerCase().includes(searchField.toLowerCase());
 	 	}	)
-	return isPanding ? 
-		<h1>loading</h1>:
-		(
+	return (
      <div className='tc'>
 		<h1 className='f1 '>RoboFriends</h1>
 		<SearchBox searchChange={onSearchChange} />
 		<Scroll>
+		{ isPending ? <h1>Loading</h1> :
 		<ErrorBoundry>
 		<CardList robots={filteredRobots}/>
 		</ErrorBoundry>
+	}
 		</Scroll>
 	</div>
     );
